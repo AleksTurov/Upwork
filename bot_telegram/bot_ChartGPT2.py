@@ -47,7 +47,7 @@ def handle_message(message):
         None
     """
     try:
-        engine = "text-davinci-003"
+        engine = "gpt-3.5-turbo"
         prompt = message.text
         completion = openai.Completion.create(engine=engine, prompt=prompt, temperature=0.5, max_tokens=4000)
 
