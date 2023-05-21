@@ -27,7 +27,7 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        python bot_telegram/bot.py
+        python bot_telegram/bot_ChartGPT.ipynb
 
 
 
