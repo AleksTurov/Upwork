@@ -19,8 +19,11 @@ def handle_message(message):
     try:
         # Если история чата для этой группы еще не начата, начинаем ее
         if message.chat.id not in chat_history:
-            chat_history[message.chat.id] = [{"role": "system", "content": 'You are ChatGPT, a large language model AI.'}]
-        
+            chat_history[message.chat.id] = [
+                {"role": "system", "content": 'You are Eva, a personal assistant.'},
+                {"role": "assistant", "content": 'Привет! Меня зовут Ева, я Ваш персональный консультант.'}
+            ]
+
         # Добавляем новое сообщение в историю чата
         chat_history[message.chat.id].append({"role": "user", "content": message.text})
 
@@ -32,7 +35,7 @@ def handle_message(message):
         if 'choices' in completion and len(completion.choices) > 0 and 'message' in completion.choices[0] and 'content' in completion.choices[0]['message']:
             # Добавляем ответ бота в историю чата
             chat_history[message.chat.id].append({"role": "assistant", "content": completion.choices[0]['message']['content']})
-            
+
             bot.reply_to(message, completion.choices[0]['message']['content'])
         else:
             bot.reply_to(message, "Sorry, I couldn't understand your message.")
@@ -40,12 +43,4 @@ def handle_message(message):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-
-
-
 bot.polling()
-
-
-
-
-
