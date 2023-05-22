@@ -1,32 +1,36 @@
-name: Bot Telegramm gpt3.5
+import os
+import openai
+import telebot
 
-on: 
-  push:
-    branches:
-      - master
+# Получаем токены из переменных окружения для безопасности
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# Задаем токен бота и ключ API
+bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
+openai.api_key = OPENAI_API_KEY
 
-    steps:
-    - uses: actions/checkout@v2
+# Задаем идентификатор группы
+group_id = -1001647255083  # replace with your group chat ID
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: 3.10
+@bot.message_handler(func=lambda _: True)
+def handle_message(message):
+    # Используем 'try-except' для обработки ошибок при взаимодействии с OpenAI
+    try:
+        model = "gpt-3.5-turbo"
+        prompt = message.text
+        completion = openai.ChatCompletion.create(model=model, messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}], max_tokens=4000)
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install openai telebot pytelegramBotApi
+        # Проверяем наличие ожидаемого поля в ответе от OpenAI
+        if 'choices' in completion and len(completion.choices) > 0 and 'message' in completion.choices[0] and 'content' in completion.choices[0]['message']:
+            bot.send_message(chat_id=group_id, text=completion.choices[0]['message']['content'])
+        else:
+            bot.send_message(chat_id=group_id, text="Sorry, I couldn't understand your message.")
 
-    - name: Run bot
-      env:  # Задаем переменные окружения, которые будут доступны во время этого шага
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      run: |
-        python bot_telegram/bot_ChartGPT2.py
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+bot.polling()
+
 
 
