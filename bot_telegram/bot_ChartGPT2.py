@@ -13,7 +13,8 @@ openai.api_key = OPENAI_API_KEY
 # Задаем словарь для хранения истории чата
 chat_history = {}
 
-@bot.message_handler(func=lambda m: True)
+@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['ева', 'привет']))
+
 def handle_message(message):
     # Используем 'try-except' для обработки ошибок при взаимодействии с OpenAI
     try:
