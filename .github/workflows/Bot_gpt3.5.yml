@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install openai telebot pytelegramBotApi
+        pip install openai telebot pytelegramBotApi pydub SpeechRecognition
 
 
     - name: Run bot
@@ -28,7 +28,7 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        python Upwork/bot_gpt3.5/bot_gpt3.5.py
+        python ./bot_gpt3.5/bot_gpt3.5.py
 
 
 
