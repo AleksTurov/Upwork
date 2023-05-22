@@ -38,7 +38,7 @@ def handle_message(message):
 
         # Используем 'gpt-3.5-turbo' для создания ответа, включая историю чата в качестве контекста
         model = "gpt-3.5-turbo"
-        completion = openai.ChatCompletion.create(model=model, messages=chat_history[message.chat.id], max_tokens=4000)
+        completion = openai.ChatCompletion.create(model=model, messages=chat_history[message.chat.id], max_tokens=1000)
 
         # Проверяем наличие ожидаемого поля в ответе от OpenAI
         if 'choices' in completion and len(completion.choices) > 0 and 'message' in completion.choices[0] and 'content' in completion.choices[0]['message']:
@@ -92,7 +92,7 @@ def handle_audio(message):
 
             # Используем 'gpt-3.5-turbo' для создания ответа, включая историю чата в качестве контекста
             model = "gpt-3.5-turbo"
-            completion = openai.ChatCompletion.create(model=model, messages=chat_history[message.chat.id], max_tokens=4000)
+            completion = openai.ChatCompletion.create(model=model, messages=chat_history[message.chat.id], max_tokens=1000)
 
             # Проверяем наличие ожидаемого поля в ответе от OpenAI
             if 'choices' in completion and len(completion.choices) > 0 and 'message' in completion.choices[0] and 'content' in completion.choices[0]['message']:
