@@ -2,7 +2,7 @@ import os
 import openai
 import telebot
 
-# Получаем токены из переменных окружения для безопасности
+# Получаем токены из переменных окружения для безопасности github actions
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
