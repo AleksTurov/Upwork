@@ -22,7 +22,7 @@ def handle_message(message):
     try:
         # Если история чата для этой группы еще не начата, начинаем ее
         if group_id not in chat_history:
-            chat_history[group_id] = []
+            chat_history[group_id] = [{"role": "assistant", "content": "Привет! Меня зовут Ева, я Ваш персональный консультант."}]
 
         # Добавляем новое сообщение в историю чата
         chat_history[group_id].append({"role": "user", "content": message.text})
@@ -44,6 +44,7 @@ def handle_message(message):
         print(f"An error occurred: {e}")
 
 bot.polling()
+
 
 
 
