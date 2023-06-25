@@ -1,6 +1,9 @@
 import os
 import openai
 import telebot
+import pytesseract
+from PIL import Image
+import io
 
 from pydub import AudioSegment #для преобразования аудиофайлов и обнаружения тишины в них.
 
@@ -21,7 +24,7 @@ r = sr.Recognizer()
 # Задаем словарь для хранения истории чата
 chat_history = {}
 
-@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['ева', 'привет']))
+@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['ева','Ева', 'Привет', 'Hi', 'привет']))
 
 def handle_message(message):
     # Используем 'try-except' для обработки ошибок при взаимодействии с OpenAI
@@ -108,5 +111,24 @@ def handle_audio(message):
     except Exception as e:
         print(f"An error occurred: {e}")
         bot.reply_to(message, "Sorry, an error occurred while processing your audio message.")
+
+@bot.message_handler(content_types=['photo'])
+def handle_photo(message):
+    process_photo_message(message)
+    
+def process_photo_message(message):
+    try:
+        file_info = bot.get_file(message.photo[-1].file_id)
+        downloaded_file = bot.download_file(file_info.file_path)
+
+        image = Image.open(io.BytesIO(downloaded_file))
+        text = pytesseract.image_to_string(image)
+
+        # Выводим обнаруженный текст
+        bot.reply_to(message, text)
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        bot.reply_to(message, "Sorry, an error occurred while processing your photo.")
 
 bot.polling()
