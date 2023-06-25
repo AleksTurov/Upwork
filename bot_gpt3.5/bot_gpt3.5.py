@@ -125,22 +125,17 @@ def process_photo_message(message):
         file_info = bot.get_file(message.photo[-1].file_id)
         downloaded_file = bot.download_file(file_info.file_path)
 
-        nparr = np.frombuffer(downloaded_file, np.uint8)
-        img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        image = Image.open(io.BytesIO(downloaded_file))
+        gray_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)
+        text = pytesseract.image_to_string(gray_image, config=custom_config)
 
-        # Предварительная обработка изображения
-        gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)  # преобразование в оттенки серого
-        resized = cv2.resize(gray, (800, 800))  # изменение размера изображения
-
-        # Использование Tesseract для распознавания текста
-        text = pytesseract.image_to_string(resized, lang='eng')
-
-        # Выводим обнаруженный текст
+        # Отправляем обработанный текст
         bot.reply_to(message, text)
 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An error occurred: {str(e)}")  # Вывод подробностей об ошибке
         bot.reply_to(message, "Sorry, an error occurred while processing your photo.")
+
 
 
 bot.polling()
