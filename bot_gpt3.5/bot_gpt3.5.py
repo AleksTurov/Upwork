@@ -112,6 +112,10 @@ def handle_audio(message):
         print(f"An error occurred: {e}")
         bot.reply_to(message, "Sorry, an error occurred while processing your audio message.")
 
+
+import cv2
+import numpy as np
+
 @bot.message_handler(content_types=['photo'])
 def handle_photo(message):
     process_photo_message(message)
@@ -121,8 +125,15 @@ def process_photo_message(message):
         file_info = bot.get_file(message.photo[-1].file_id)
         downloaded_file = bot.download_file(file_info.file_path)
 
-        image = Image.open(io.BytesIO(downloaded_file))
-        text = pytesseract.image_to_string(image)
+        nparr = np.frombuffer(downloaded_file, np.uint8)
+        img_np = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+        # Предварительная обработка изображения
+        gray = cv2.cvtColor(img_np, cv2.COLOR_BGR2GRAY)  # преобразование в оттенки серого
+        resized = cv2.resize(gray, (800, 800))  # изменение размера изображения
+
+        # Использование Tesseract для распознавания текста
+        text = pytesseract.image_to_string(resized, lang='eng')
 
         # Выводим обнаруженный текст
         bot.reply_to(message, text)
@@ -130,5 +141,6 @@ def process_photo_message(message):
     except Exception as e:
         print(f"An error occurred: {e}")
         bot.reply_to(message, "Sorry, an error occurred while processing your photo.")
+
 
 bot.polling()
