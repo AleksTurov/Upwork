@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install openai telebot pytelegramBotApi pydub SpeechRecognition
+        pip install pyTelegramBotAPI openai pytesseract pillow io pydub SpeechRecognitions
         sudo apt-get update
         sudo apt-get install -y ffmpeg
 
