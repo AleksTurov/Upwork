@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Python 3.10.10
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v2
       with:
         python-version: 3.10.10
 
@@ -24,13 +24,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ffmpeg
 
-
-
     - name: Run bot
-      env:  # Задаем переменные окружения, которые будут доступны во время этого шага
+      env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        python /media/aleksey/A6B828A60EB3956D/Github/Upwork/bot_gpt3.5/bot_gpt3.py
-
+        python bot_gpt3.5/bot_gpt3.py
 
