@@ -113,44 +113,4 @@ def handle_audio(message):
         bot.reply_to(message, "Sorry, an error occurred while processing your audio message.")
 
 
-import cv2
-import numpy as np
-
-@bot.message_handler(content_types=['photo'])
-def handle_photo(message):
-    process_photo_message(message)
-    
-def process_photo_message(message):
-    try:
-        file_info = bot.get_file(message.photo[-1].file_id)
-        downloaded_file = bot.download_file(file_info.file_path)
-
-        image = Image.open(io.BytesIO(downloaded_file))
-        gray_image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)
-        text = pytesseract.image_to_string(gray_image, config=custom_config)
-
-        # Отправляем обработанный текст
-        bot.reply_to(message, text)
-
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")  # Вывод подробностей об ошибке
-        bot.reply_to(message, "Sorry, an error occurred while processing your photo.")
-
-
-@bot.message_handler(content_types=['document'])
-def handle_document(message):
-    process_document_message(message)
-
-def process_document_message(message):
-    try:
-        file_info = bot.get_file(message.document.file_id)
-        downloaded_file = bot.download_file(file_info.file_path)
-
-        text = extract_text(io.BytesIO(downloaded_file))
-
-        bot.reply_to(message, text)
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        bot.reply_to(message, "Sorry, an error occurred while processing your document.")
-
 bot.polling()
