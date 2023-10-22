@@ -32,7 +32,7 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
-        python ./bot_gpt3.5/bot_gpt3.5.py
+        python /media/aleksey/A6B828A60EB3956D/Github/Upwork/bot_gpt3.5/bot_gpt3.5.py
 
 
 
