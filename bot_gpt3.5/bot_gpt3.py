@@ -24,6 +24,8 @@ chat_history = {}
 @bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['Hi', 'Привет', 'ева', 'привет']))
 
 def handle_message(message):
+    print("Received message:", message.text)  # Отладочное сообщение
+
     # Используем 'try-except' для обработки ошибок при взаимодействии с OpenAI
     try:
         # Если история чата для этой группы еще не начата, начинаем ее
