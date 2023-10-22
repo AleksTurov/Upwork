@@ -21,7 +21,7 @@ r = sr.Recognizer()
 # Задаем словарь для хранения истории чата
 chat_history = {}
 
-@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['ева', 'привет']))
+@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['Hi', 'Привет', 'ева', 'привет']))
 
 def handle_message(message):
     # Используем 'try-except' для обработки ошибок при взаимодействии с OpenAI
