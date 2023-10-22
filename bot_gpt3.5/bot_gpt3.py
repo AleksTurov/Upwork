@@ -11,7 +11,7 @@ import speech_recognition as sr #для распознавания речи в �
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-# Задаем токен бота и ключ API
+# Задаем токен бота и ключ
 bot = telebot.TeleBot(TELEGRAM_BOT_TOKEN)
 openai.api_key = OPENAI_API_KEY
 
