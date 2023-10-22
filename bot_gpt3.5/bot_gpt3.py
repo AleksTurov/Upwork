@@ -1,9 +1,6 @@
 import os
 import openai
 import telebot
-import pytesseract
-from PIL import Image
-import io
 
 from pydub import AudioSegment #для преобразования аудиофайлов и обнаружения тишины в них.
 
@@ -24,7 +21,7 @@ r = sr.Recognizer()
 # Задаем словарь для хранения истории чата
 chat_history = {}
 
-@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['ева','Ева', 'Привет', 'Hi', 'привет']))
+@bot.message_handler(func=lambda m: any(word in m.text.lower() for word in ['ева', 'привет']))
 
 def handle_message(message):
     # Используем 'try-except' для обработки ошибок при взаимодействии с OpenAI
@@ -111,6 +108,5 @@ def handle_audio(message):
     except Exception as e:
         print(f"An error occurred: {e}")
         bot.reply_to(message, "Sorry, an error occurred while processing your audio message.")
-
 
 bot.polling()
