@@ -1,4 +1,5 @@
-name: Bot Telegramm gpt3.5
+
+name: Bot Telegramm gpt3.5 ver1
 
 on: 
   push:
