@@ -25,6 +25,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyTelegramBotAPI openai pytesseract pillow pydub SpeechRecognition opencv-python-headless pdfminer.six
 
+          
       - name: Install system dependencies
         run: sudo apt-get install -y ffmpeg
 
