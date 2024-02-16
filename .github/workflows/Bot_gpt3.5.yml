@@ -27,8 +27,8 @@ jobs:
         
     - name: Run bot
       env:
-        TELEGRAM_BOT_TOKEN: 'AAFpxxHnaIHGWueiHh1mN9U5FkV01ntsrUM'
-        OPENAI_API_KEY: "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"
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       run: |
         python bot_gpt3.5/bot_gpt3.py
 
