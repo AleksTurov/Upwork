@@ -9,7 +9,7 @@ import speech_recognition as sr #для распознавания речи в �
 
 # Получаем токены из переменных окружения для безопасности
 #TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_BOT_TOKEN = '6069004077:AAFpxxHnaIHGWueiHh1mN9U5FkV01ntsrUM'
+TELEGRAM_BOT_TOKEN = 'AAFpxxHnaIHGWueiHh1mN9U5FkV01ntsrUM'
 OPENAI_API_KEY = "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"
 #OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
