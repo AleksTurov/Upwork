@@ -23,7 +23,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg --fix-missing
           python -m pip install --upgrade pip
-          pip install pyTelegramBotAPI openai pytesseract pillow pydub SpeechRecognition opencv-python-headless pdfminer.six
+          pip install pyTelegramBotAPI openai==0.28 pytesseract pillow pydub SpeechRecognition opencv-python-headless pdfminer.six
 
           
       - name: Install system dependencies

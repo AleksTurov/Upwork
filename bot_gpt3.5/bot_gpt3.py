@@ -1,5 +1,6 @@
 import os
 import openai
+
 import telebot
 from pydub import AudioSegment
 import speech_recognition as sr
@@ -18,6 +19,7 @@ recognizer = sr.Recognizer()
 
 # Словарь для хранения истории чата
 chat_history = {}
+
 
 def generate_openai_response(chat_id, text):
     """
