@@ -41,7 +41,7 @@ def generate_openai_response(chat_id, text):
         return response.choices[0].message.content
     else:
         return "Извините, я не смог понять ваше сообщение."
-
+    
 @bot.message_handler(func=lambda message: True)
 def handle_messages(message):
     """Обработка текстовых и голосовых сообщений."""
@@ -67,6 +67,10 @@ def handle_messages(message):
 
         response = generate_openai_response(message.chat.id, text)
         bot.reply_to(message, response)
+        
+    try:
+        print("Обработка сообщения:", message.text)
+        # Ваш код обработки сообщения здесь
     except Exception as e:
         print(f"Произошла ошибка: {e}")
         bot.reply_to(message, "Извините, произошла ошибка при обработке вашего сообщения.")
