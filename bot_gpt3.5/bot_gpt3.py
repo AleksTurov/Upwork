@@ -31,7 +31,7 @@ def generate_openai_response(chat_id, text):
     chat_history[chat_id].append({"role": "user", "content": text})
 
     response = openai.ChatCompletion.create(
-        model="gpt-4-0125-preview",  # Используйте актуальную модель
+        model="gpt-3.5-turbo",  # Используйте актуальную модель
         messages=chat_history[chat_id],
         max_tokens=1000
     )
