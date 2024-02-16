@@ -5,7 +5,7 @@ from pydub import AudioSegment
 import speech_recognition as sr
 from tempfile import NamedTemporaryFile
 
-# Получение токенов из переменных окружения
+# Получение токенов из переменных окружения для безопасности
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
@@ -20,18 +20,16 @@ recognizer = sr.Recognizer()
 chat_history = {}
 
 def generate_openai_response(chat_id, text):
-    """Генерация ответа с использованием модели GPT от OpenAI."""
+    """
+    Генерация ответа с использованием модели GPT от OpenAI.
+    """
     if chat_id not in chat_history:
-        chat_history[chat_id] = [
-            {"role": "system", "content": "You are Eva, a personal assistant."},
-            {"role": "assistant", "content": "Hello! I'm Eva, your personal assistant."},
-            {"role": "assistant", "content": 'Привет! Меня зовут Ева, я Ваш персональный консультант.'}
-        ]
+        chat_history[chat_id] = []
 
     chat_history[chat_id].append({"role": "user", "content": text})
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo",  # Используйте актуальную модель
         messages=chat_history[chat_id],
         max_tokens=1000
     )
@@ -44,7 +42,10 @@ def generate_openai_response(chat_id, text):
 
 @bot.message_handler(func=lambda message: True)
 def handle_messages(message):
-    """Обработка текстовых и голосовых сообщений."""
+    """
+    Обработка текстовых и голосовых сообщений.
+    Бот отвечает только если сообщение содержит 'Привет', 'hi', 'Ева' или 'eva'.
+    """
     try:
         text = ''
         if message.content_type == 'text':
@@ -64,14 +65,17 @@ def handle_messages(message):
                         audio_data = recognizer.record(source)
                         text = recognizer.recognize_google(audio_data, language='ru-RU')
 
-        # Проверка наличия имени "Ева" или "eva" в тексте
-        if "ева" in text.lower() or "eva" in text.lower():
+        # Проверка наличия ключевых слов для активации бота
+        if any(keyword in text.lower() for keyword in ['привет', 'hi', 'ева', 'eva', 'Eva', 'Ева']):
             response = generate_openai_response(message.chat.id, text)
             bot.reply_to(message, response)
         else:
-            print("Сообщение не содержит обращения к Ева.")
+            # Бот не отвечает, если ключевые слова отсутствуют
+            print("Сообщение не содержит ключевых слов для активации бота.")
+            
     except Exception as e:
         print(f"Произошла ошибка: {e}")
+        # Отправка сообщения об ошибке, если произошло исключение
         bot.reply_to(message, "Извините, произошла ошибка при обработке вашего сообщения.")
 
 # Запуск бота в режиме опроса с бесконечным циклом
