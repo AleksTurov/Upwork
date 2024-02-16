@@ -31,7 +31,7 @@ def generate_openai_response(chat_id, text):
     chat_history[chat_id].append({"role": "user", "content": text})
 
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Используйте актуальную модель
+        model="gpt-3.5-turbo",
         messages=chat_history[chat_id],
         max_tokens=1000
     )
@@ -41,11 +41,12 @@ def generate_openai_response(chat_id, text):
         return response.choices[0].message.content
     else:
         return "Извините, я не смог понять ваше сообщение."
-    
+
 @bot.message_handler(func=lambda message: True)
 def handle_messages(message):
     """Обработка текстовых и голосовых сообщений."""
     try:
+        text = ''
         if message.content_type == 'text':
             text = message.text
         elif message.content_type == 'voice':
@@ -62,19 +63,16 @@ def handle_messages(message):
                     with sr.AudioFile(wav_file.name) as source:
                         audio_data = recognizer.record(source)
                         text = recognizer.recognize_google(audio_data, language='ru-RU')
-        else:
-            return  # Пропускаем обработку, если сообщение не текст и не голос
 
-        response = generate_openai_response(message.chat.id, text)
-        bot.reply_to(message, response)
-        
-    try:
-        print("Обработка сообщения:", message.text)
-        # Ваш код обработки сообщения здесь
+        # Проверка наличия имени "Ева" или "eva" в тексте
+        if "ева" in text.lower() or "eva" in text.lower():
+            response = generate_openai_response(message.chat.id, text)
+            bot.reply_to(message, response)
+        else:
+            print("Сообщение не содержит обращения к Ева.")
     except Exception as e:
         print(f"Произошла ошибка: {e}")
         bot.reply_to(message, "Извините, произошла ошибка при обработке вашего сообщения.")
 
-# Запуск бота
+# Запуск бота в режиме опроса с бесконечным циклом
 bot.polling(non_stop=True)
-
